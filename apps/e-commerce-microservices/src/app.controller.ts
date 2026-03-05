@@ -9,7 +9,7 @@ import {
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import type { Response } from 'express';
-import { RegisterDto } from 'apps/auth/src/dto/RegisterDto';
+import { RegisterDto } from 'apps/auth/src/dto/register.dto';
 
 @Controller('auth')
 export class AppController {
