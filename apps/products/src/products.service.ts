@@ -21,7 +21,7 @@ export class ProductsService {
       this.logger.log(`Product created: ${savedProduct.id}`);
       return savedProduct;
     } catch (error) {
-      this.logger.error(`Failed to create product: ${error.message}`);
+      this.logger.error(`Failed to create product: ${error.message}`);      
       return { error: 'Failed to create product', status: 500 };
     }
   }
