@@ -41,4 +41,13 @@ export class AuthService {
       user: { id: user.id, email: user.email },
     };
   }
+
+  async validateToken(token: string) {
+    try {
+      const payload = this.jwtService.verify(token);
+      return !!payload;
+    } catch (e) {
+      return false;
+    }
+  }
 }

@@ -15,4 +15,9 @@ export class AuthController {
   login(data: any) {
     return this.authService.login(data);
   }
+
+  @MessagePattern({ cmd: 'validate_token' })
+  validateToken(data: { token: string }) {
+    return this.authService.validateToken(data.token);
+  }
 }
