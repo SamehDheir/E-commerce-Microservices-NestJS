@@ -45,4 +45,16 @@ export class AppController {
 
     return result;
   }
+
+  @Post('logout')
+  async logout(@Res({ passthrough: true }) response: Response) {
+    response.cookie('access_token', '', {
+      httpOnly: true,
+      expires: new Date(0),
+      sameSite: 'lax',
+      secure: false,
+    });
+
+    return { message: 'Logged out successfully' };
+  }
 }
