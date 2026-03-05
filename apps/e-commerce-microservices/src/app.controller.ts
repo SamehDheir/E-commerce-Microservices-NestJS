@@ -10,6 +10,8 @@ import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import type { Response } from 'express';
 import { RegisterDto } from 'apps/auth/src/dto/register.dto';
+import { ForgotPasswordDto } from 'apps/auth/src/dto/forgot-password.dto';
+import { ResetPasswordDto } from 'apps/auth/src/dto/reset-password.dto';
 
 @Controller('auth')
 export class AppController {
@@ -56,5 +58,19 @@ export class AppController {
     });
 
     return { message: 'Logged out successfully' };
+  }
+
+  @Post('forgot-password')
+  async forgotPassword(@Body() body: ForgotPasswordDto) {
+    return await lastValueFrom(
+      this.client.send({ cmd: 'forgot_password' }, body),
+    );
+  }
+
+  @Post('reset-password')
+  async resetPassword(@Body() body: ResetPasswordDto) {
+    return await lastValueFrom(
+      this.client.send({ cmd: 'reset_password' }, body),
+    );
   }
 }
