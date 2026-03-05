@@ -9,14 +9,14 @@ async function bootstrap() {
     {
       transport: Transport.TCP,
       options: {
-        host: process.env.AUTH_SERVICE_HOST || '127.0.0.1',
+        host: process.env.SERVICE_HOST || '127.0.0.1',
         port: Number(process.env.AUTH_SERVICE_PORT) || 3001,
       },
     },
   );
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true, 
+      whitelist: true,
       forbidNonWhitelisted: true,
       transform: true,
     }),
