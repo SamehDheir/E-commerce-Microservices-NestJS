@@ -6,7 +6,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, timeout, catchError, of } from 'rxjs';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -15,17 +15,30 @@ export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
 
-    const token = request.cookies?.['access_token'];
+    const token =
+      request.cookies?.['access_token'] ||
+      request.headers['authorization']?.split(' ')[1];
 
-    if (!token) throw new UnauthorizedException('No token found');
+    if (!token)
+      throw new UnauthorizedException('Authentication token not found');
 
     try {
-      const isValid = await lastValueFrom(
-        this.client.send({ cmd: 'validate_token' }, { token }),
+      const user = await lastValueFrom(
+        this.client.send({ cmd: 'validate_token' }, { token }).pipe(
+          timeout(5000),
+          catchError(() => of(null)),
+        ),
       );
-      return isValid;
+
+      if (!user) {
+        throw new UnauthorizedException('Invalid or expired token');
+      }
+
+      request.user = user;
+
+      return true;
     } catch (err) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('Identity verification failed');
     }
   }
 }

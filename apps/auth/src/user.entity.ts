@@ -3,7 +3,7 @@ import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Column({ unique: true })
   email: string;
@@ -11,9 +11,9 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ nullable: true })
-  resetPasswordToken: string;
+  @Column({ type: 'text', nullable: true })
+  resetPasswordToken: string | null;
 
   @Column({ type: 'timestamp', nullable: true })
-  resetPasswordExpires: Date;
+  resetPasswordExpires: Date | null;
 }

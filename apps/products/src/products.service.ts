@@ -13,16 +13,14 @@ export class ProductsService {
     private readonly productRepo: Repository<Product>,
   ) {}
 
-   // Create a new product with logging
-  async createProduct(data: CreateProductDto) {
+  // Create a new product with logging
+  async createProduct(data: any) { // الـ data هنا تحتوي على المنتج + userId
     try {
       const product = this.productRepo.create(data);
-      const savedProduct = await this.productRepo.save(product);
-      this.logger.log(`Product created: ${savedProduct.id}`);
-      return savedProduct;
+      return await this.productRepo.save(product);
     } catch (error) {
-      this.logger.error(`Failed to create product: ${error.message}`);      
-      return { error: 'Failed to create product', status: 500 };
+      console.error('DATABASE ERROR:', error);
+      throw error;
     }
   }
 

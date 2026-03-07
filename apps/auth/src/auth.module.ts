@@ -23,7 +23,7 @@ import { MailService } from './mail/mail.service';
         port: configService.get<number>('DB_PORT'),
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
-        database: configService.get<string>('DB_NAME'),
+        database: 'auth_db',
         entities: [User],
         synchronize: true,
       }),
@@ -35,6 +35,7 @@ import { MailService } from './mail/mail.service';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
+        global: true,
         secret: configService.get<string>('JWT_SECRET'),
         signOptions: {
           expiresIn: parseInt(

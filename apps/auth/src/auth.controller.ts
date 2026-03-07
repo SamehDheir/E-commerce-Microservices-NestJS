@@ -1,8 +1,9 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AuthService } from './auth.service';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { ValidateTokenDto } from './dto/validate-token.dto';
 
 @Controller()
 export class AuthController {
@@ -19,8 +20,8 @@ export class AuthController {
   }
 
   @MessagePattern({ cmd: 'validate_token' })
-  validateToken(data: { token: string }) {
-    return this.authService.validateToken(data.token);
+  async validateToken(@Payload() data: ValidateTokenDto) {
+    return await this.authService.validateToken(data.token);
   }
 
   @MessagePattern({ cmd: 'forgot_password' })

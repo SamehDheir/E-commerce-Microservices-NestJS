@@ -1,4 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Product {
@@ -19,6 +24,9 @@ export class Product {
 
   @Column({ nullable: true })
   category: string;
+
+  @Column({ nullable: true })
+  userId: string;
 
   @CreateDateColumn()
   createdAt: Date;
