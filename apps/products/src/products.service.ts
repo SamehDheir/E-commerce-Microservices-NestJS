@@ -21,7 +21,7 @@ export class ProductsService {
   ) {}
 
   // Create a new product with logging
-  async createProduct(data: any) {
+  async createProduct(data: CreateProductDto) {
     try {
       const product = this.productRepo.create(data);
       return await this.productRepo.save(product);
