@@ -7,6 +7,10 @@ import {
   Query,
   UseGuards,
   Req,
+  Delete,
+  Param,
+  NotFoundException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { CreateProductDto } from 'apps/products/src/dto/create-product.dto';
@@ -19,18 +23,19 @@ export class ProductsController {
     @Inject('PRODUCT_SERVICE') private readonly productClient: ClientProxy,
   ) {}
 
-// apps/gateway/src/products.controller.ts
-@UseGuards(AuthGuard)
-@Post()
-async createProduct(@Body() data: any, @Req() req: any) {
-  // الـ Gateway هو المكان الوحيد الذي يوجد فيه client.send
-  return await lastValueFrom(
-    this.productClient.send({ cmd: 'create_product' }, { 
-      ...data, 
-      userId: req.user.id 
-    })
-  );
-}
+  @UseGuards(AuthGuard)
+  @Post()
+  async createProduct(@Body() data: CreateProductDto, @Req() req: any) {
+    return await lastValueFrom(
+      this.productClient.send(
+        { cmd: 'create_product' },
+        {
+          ...data,
+          userId: req.user.id,
+        },
+      ),
+    );
+  }
 
   @Get()
   async getAllProducts(
@@ -40,5 +45,34 @@ async createProduct(@Body() data: any, @Req() req: any) {
     return await lastValueFrom(
       this.productClient.send({ cmd: 'get_all_products' }, { page, limit }),
     );
+  }
+
+  @Get(':id')
+  async getProduct(@Param('id') id: string) {
+    try {
+      return await lastValueFrom(
+        this.productClient.send({ cmd: 'get_one_product' }, { id }),
+      );
+    } catch (error) {
+      if (error.status === 404) {
+        throw new NotFoundException(error.message);
+      }
+      throw new InternalServerErrorException('Get Product failed');
+    }
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete(':id')
+  async deleteProduct(@Param('id') id: string) {
+    try {
+      return await lastValueFrom(
+        this.productClient.send({ cmd: 'delete_product' }, { id }),
+      );
+    } catch (error) {
+      if (error.status === 404) {
+        throw new NotFoundException(error.message);
+      }
+      throw new InternalServerErrorException('deletion failed');
+    }
   }
 }

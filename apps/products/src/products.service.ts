@@ -1,4 +1,10 @@
-import { Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Product } from './product.entity';
@@ -14,7 +20,8 @@ export class ProductsService {
   ) {}
 
   // Create a new product with logging
-  async createProduct(data: any) { // الـ data هنا تحتوي على المنتج + userId
+  async createProduct(data: any) {
+    // الـ data هنا تحتوي على المنتج + userId
     try {
       const product = this.productRepo.create(data);
       return await this.productRepo.save(product);
@@ -37,5 +44,28 @@ export class ProductsService {
       currentPage: page,
       totalPages: Math.ceil(total / limit),
     };
+  }
+
+  // Get a single product by ID
+  async findOne(id: string) {
+    if (!id) throw new BadRequestException('ID is required');
+
+    const product = await this.productRepo.findOne({ where: { id } });
+
+    if (!product) {
+      throw new NotFoundException(`Product with ID ${id} not found`);
+    }
+    return product;
+  }
+
+  // Delete a product by ID
+  async remove(id: string) {
+    const result = await this.productRepo.delete(id);
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`Product with ID ${id} not found`);
+    }
+
+    return { message: 'Product deleted successfully' };
   }
 }
