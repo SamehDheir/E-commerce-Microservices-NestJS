@@ -9,6 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Product } from './product.entity';
 import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @Injectable()
 export class ProductsService {
@@ -21,7 +22,6 @@ export class ProductsService {
 
   // Create a new product with logging
   async createProduct(data: any) {
-    // الـ data هنا تحتوي على المنتج + userId
     try {
       const product = this.productRepo.create(data);
       return await this.productRepo.save(product);
@@ -67,5 +67,20 @@ export class ProductsService {
     }
 
     return { message: 'Product deleted successfully' };
+  }
+
+  // Update a product by ID
+  async update(id: string, updateData: UpdateProductDto, userId: string) {
+    const product = await this.productRepo.findOne({ where: { id, userId } });
+
+    if (!product) {
+      throw new NotFoundException(
+        'Product not found or you do not have permission',
+      );
+    }
+
+    const updatedProduct = this.productRepo.merge(product, updateData);
+
+    return await this.productRepo.save(updatedProduct);
   }
 }

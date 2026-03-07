@@ -2,6 +2,7 @@ import { Controller, Get, ParseUUIDPipe } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @Controller()
 export class ProductsController {
@@ -20,6 +21,22 @@ export class ProductsController {
   @MessagePattern({ cmd: 'get_one_product' })
   async handleGetOne(@Payload('id', ParseUUIDPipe) id: string) {
     return await this.productsService.findOne(id);
+  }
+
+  @MessagePattern({ cmd: 'update_product' })
+  async handleUpdate(
+    @Payload()
+    data: {
+      id: string;
+      updateData: UpdateProductDto;
+      userId: string;
+    },
+  ) {
+    return await this.productsService.update(
+      data.id,
+      data.updateData,
+      data.userId,
+    );
   }
 
   @MessagePattern({ cmd: 'delete_product' })

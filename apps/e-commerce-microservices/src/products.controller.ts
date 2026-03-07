@@ -11,6 +11,7 @@ import {
   Param,
   NotFoundException,
   InternalServerErrorException,
+  Patch,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { CreateProductDto } from 'apps/products/src/dto/create-product.dto';
@@ -74,5 +75,23 @@ export class ProductsController {
       }
       throw new InternalServerErrorException('deletion failed');
     }
+  }
+  @UseGuards(AuthGuard)
+  @Patch(':id')
+  async updateProduct(
+    @Param('id') id: string,
+    @Body() updateData: any,
+    @Req() req: any,
+  ) {
+    return await lastValueFrom(
+      this.productClient.send(
+        { cmd: 'update_product' },
+        {
+          id,
+          updateData,
+          userId: req.user.id,
+        },
+      ),
+    );
   }
 }
