@@ -3,6 +3,7 @@ import { ProductsService } from './products.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { FilterProductDto } from './dto/filter-product.dto';
 
 @Controller()
 export class ProductsController {
@@ -14,8 +15,8 @@ export class ProductsController {
   }
 
   @MessagePattern({ cmd: 'get_all_products' })
-  async handleGetAllProducts(data: { page: number; limit: number }) {
-    return await this.productsService.findAll(data.page, data.limit);
+  async handleGetAllProducts(filterDto: FilterProductDto) {
+    return await this.productsService.findAll(filterDto);
   }
 
   @MessagePattern({ cmd: 'get_one_product' })

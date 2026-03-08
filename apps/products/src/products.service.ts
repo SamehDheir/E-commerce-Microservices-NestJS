@@ -10,6 +10,7 @@ import { Repository } from 'typeorm';
 import { Product } from './product.entity';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { FilterProductDto } from './dto/filter-product.dto';
 
 @Injectable()
 export class ProductsService {
@@ -32,19 +33,51 @@ export class ProductsService {
   }
 
   // Get all products with pagination
-  async findAll(page: number = 1, limit: number = 10) {
-    const [result, total] = await this.productRepo.findAndCount({
-      take: limit,
-      skip: (page - 1) * limit,
-    });
+  async findAll(filterDto: FilterProductDto) {
+    const {
+      search,
+      category,
+      minPrice,
+      maxPrice,
+      page = 1,
+      limit = 10,
+    } = filterDto;
+
+    const query = this.productRepo.createQueryBuilder('product');
+
+    if (search) {
+      query.andWhere(
+        '(product.name LIKE :search OR product.description LIKE :search)',
+        { search: `%${search}%` },
+      );
+    }
+
+    if (category) {
+      query.andWhere('product.category = :category', { category });
+    }
+
+    if (minPrice) {
+      query.andWhere('product.price >= :minPrice', { minPrice });
+    }
+
+    if (maxPrice) {
+      query.andWhere('product.price <= :maxPrice', { maxPrice });
+    }
+
+    query.skip((page - 1) * limit);
+    query.take(limit);
+
+    const [result, total] = await query.getManyAndCount();
 
     return {
       data: result,
       count: total,
-      currentPage: page,
+      currentPage: +page,
       totalPages: Math.ceil(total / limit),
     };
   }
+
+  // apps/products/src/products.service.ts
 
   // Get a single product by ID
   async findOne(id: string) {

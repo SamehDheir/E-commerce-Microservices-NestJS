@@ -25,6 +25,7 @@ import type { File } from 'multer';
 import { extname } from 'path';
 import * as fs from 'fs';
 import * as path from 'path';
+import { FilterProductDto } from 'apps/products/src/dto/filter-product.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -63,14 +64,11 @@ export class ProductsController {
   }
 
   @Get()
-  async getAllProducts(
-    @Query('page') page: number = 1,
-    @Query('limit') limit: number = 10,
-  ) {
-    return await lastValueFrom(
-      this.productClient.send({ cmd: 'get_all_products' }, { page, limit }),
-    );
-  }
+async getProducts(@Query() filterDto: FilterProductDto) {
+  return await lastValueFrom(
+    this.productClient.send({ cmd: 'get_all_products' }, filterDto)
+  );
+}
 
   @Get(':id')
   async getProduct(@Param('id') id: string) {
@@ -128,13 +126,12 @@ export class ProductsController {
     if (file && oldProduct?.imageUrl) {
       const oldImagePath = path.join(process.cwd(), oldProduct.imageUrl);
 
-      // 3. حذف الصورة القديمة
+      // Delete old image
       if (fs.existsSync(oldImagePath)) {
         fs.unlinkSync(oldImagePath);
         console.log(`🗑️ Deleted old image: ${oldImagePath}`);
       }
 
-      // 4. تحديث المسار في البيانات المرسلة
       (updateData as any).imageUrl = file.path;
     }
     return await lastValueFrom(
