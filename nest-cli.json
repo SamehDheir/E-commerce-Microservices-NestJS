@@ -9,6 +9,15 @@
     "webpack": true
   },
   "projects": {
+    "auth": {
+      "type": "application",
+      "root": "apps/auth",
+      "entryFile": "main",
+      "sourceRoot": "apps/auth/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/auth/tsconfig.app.json"
+      }
+    },
     "e-commerce-microservices": {
       "type": "application",
       "root": "apps/e-commerce-microservices",
@@ -18,13 +27,13 @@
         "tsConfigPath": "apps/e-commerce-microservices/tsconfig.app.json"
       }
     },
-    "auth": {
+    "orders": {
       "type": "application",
-      "root": "apps/auth",
+      "root": "apps/orders",
       "entryFile": "main",
-      "sourceRoot": "apps/auth/src",
+      "sourceRoot": "apps/orders/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/auth/tsconfig.app.json"
+        "tsConfigPath": "apps/orders/tsconfig.app.json"
       }
     },
     "products": {
