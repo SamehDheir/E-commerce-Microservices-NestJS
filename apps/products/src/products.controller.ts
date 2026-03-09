@@ -1,6 +1,6 @@
 import { Controller, Get, ParseUUIDPipe } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { FilterProductDto } from './dto/filter-product.dto';
@@ -43,5 +43,47 @@ export class ProductsController {
   @MessagePattern({ cmd: 'delete_product' })
   async handleDelete(@Payload('id', ParseUUIDPipe) id: string) {
     return await this.productsService.remove(id);
+  }
+
+  @EventPattern({ cmd: 'reduce_stock' })
+  async handleReduceStock(data: { id: string; quantity: number }) {
+    try {
+      const product = await this.productsService.findOne(data.id);
+      product.stock -= data.quantity;
+      await this.productsService.update(
+        product.id,
+        { stock: product.stock },
+        product.userId,
+      );
+      console.log(
+        `📉 Stock reduced for ${product.name}. New stock: ${product.stock}`,
+      );
+    } catch (error) {
+      console.error(
+        `Error reducing stock for product ${data.id}:`,
+        error.message,
+      );
+    }
+  }
+
+  @EventPattern({ cmd: 'increase_stock' })
+  async handleIncreaseStock(data: { id: string; quantity: number }) {
+    try {
+      const product = await this.productsService.findOne(data.id);
+      product.stock += data.quantity;
+      await this.productsService.update(
+        product.id,
+        { stock: product.stock },
+        product.userId,
+      );
+      console.log(
+        `📈 Stock increased for ${product.name}. New stock: ${product.stock}`,
+      );
+    } catch (error) {
+      console.error(
+        `Error increasing stock for product ${data.id}:`,
+        error.message,
+      );
+    }
   }
 }
