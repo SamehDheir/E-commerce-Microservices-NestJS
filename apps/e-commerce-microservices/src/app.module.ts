@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ProductsController } from './products.controller';
 import { OrdersController } from './orders.controller';
+import { PaymentsController } from './payment.controller';
 
 @Module({
   imports: [
@@ -24,10 +25,15 @@ import { OrdersController } from './orders.controller';
         transport: Transport.TCP,
         options: { host: 'localhost', port: 3003 },
       },
+      {
+        name: 'PAYMENT_SERVICE',
+        transport: Transport.TCP,
+        options: { host: 'localhost', port: 3004 },
+      },
     ]),
   ],
 
-  controllers: [AppController, ProductsController, OrdersController],
+  controllers: [AppController, ProductsController, OrdersController,PaymentsController],
   providers: [AppService],
 })
 export class AppModule {}

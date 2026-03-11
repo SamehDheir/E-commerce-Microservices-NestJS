@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 
@@ -55,5 +55,10 @@ export class OrdersController {
   @MessagePattern({ cmd: 'get_order_stats' })
   async handleGetOrderStats(@Payload() data: { userId: string }) {
     return this.ordersService.getUserOrderStats(data.userId);
+  }
+
+  @EventPattern({ cmd: 'update_order_status' })
+  async handleStatusUpdate(@Payload() data: { id: string; status: string }) {
+    return this.ordersService.updateOrderStatus(data.id, data.status as any);
   }
 }
