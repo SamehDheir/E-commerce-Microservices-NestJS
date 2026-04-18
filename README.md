@@ -23,76 +23,35 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+🚀 Overview
+This project is a high-performance, scalable E-commerce Backend built using a Microservices Architecture. It leverages the power of NestJS and TypeScript to provide a modular system where each core business function (Orders, Products, Payments, etc.) operates as an independent service.
 
-## Project setup
+The architecture is designed to handle high traffic and ensure data consistency across services using modern communication patterns and message brokers.
 
-```bash
-$ npm install
-```
+🛠 Tech Stack
+- Framework: NestJS (Node.js).
+- Language: TypeScript.
+- Database: PostgreSQL & MongoDB (Database-per-service pattern).
+- ORM: Prisma ORM.
+- Communication: RabbitMQ / Redis for asynchronous messaging and event-driven architecture.
+- Security: JWT-based Authentication & Role-Based Access Control (RBAC).
+- DevOps: Docker for containerization and environment consistency.
 
-## Compile and run the project
+  🏗 Key Microservices
+  - Auth Service: Manages user identity, secure registration, and token-based sessions.
+  - Product Service: Handles the product catalog, inventory management, and search functionality.
+  - Order Service: Manages the lifecycle of an order, from creation to completion, ensuring atomic transactions.
+  - Payment Service: Integrates with payment gateways to process secure financial transactions.
 
-```bash
-# development
-$ npm run start
+  Key Features
+  - Scalability: Services can be scaled independently based on demand.
+  - Clean Architecture: Follows modular design and SOLID principles for maintainable code.
+  - API Gateway: A single entry point for client requests, routing them to the appropriate microservice.
+  - Real-time Updates: Potential for WebSocket integration to provide instant notifications (e.g., order status updates).
+  - Performance Optimized: Implements caching strategies and efficient database querying
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Run tests
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Getting Started
+- Clone the repo: git clone https://github.com/SamehDheir/E-commerce-Microservices-NestJS
+- Install dependencies: npm install
+- Environment Setup: Configure your .env files for each service.
+- Docker Compose: Spin up the infrastructure (DBs, Message Broker) using docker-compose up.
