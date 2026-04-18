@@ -22,7 +22,7 @@
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Description
-
+E-commerce Microservices with NestJS
 🚀 Overview
 This project is a high-performance, scalable E-commerce Backend built using a Microservices Architecture. It leverages the power of NestJS and TypeScript to provide a modular system where each core business function (Orders, Products, Payments, etc.) operates as an independent service.
 
@@ -37,20 +37,20 @@ The architecture is designed to handle high traffic and ensure data consistency 
 - Security: JWT-based Authentication & Role-Based Access Control (RBAC).
 - DevOps: Docker for containerization and environment consistency.
 
-  🏗 Key Microservices
-  - Auth Service: Manages user identity, secure registration, and token-based sessions.
-  - Product Service: Handles the product catalog, inventory management, and search functionality.
-  - Order Service: Manages the lifecycle of an order, from creation to completion, ensuring atomic transactions.
-  - Payment Service: Integrates with payment gateways to process secure financial transactions.
+🏗 Key Microservices
+- Auth Service: Manages user identity, secure registration, and token-based sessions.
+- Product Service: Handles the product catalog, inventory management, and search functionality.
+- Order Service: Manages the lifecycle of an order, from creation to completion, ensuring atomic transactions.
+- Payment Service: Integrates with payment gateways to process secure financial transactions.
 
-  Key Features
-  - Scalability: Services can be scaled independently based on demand.
-  - Clean Architecture: Follows modular design and SOLID principles for maintainable code.
-  - API Gateway: A single entry point for client requests, routing them to the appropriate microservice.
-  - Real-time Updates: Potential for WebSocket integration to provide instant notifications (e.g., order status updates).
-  - Performance Optimized: Implements caching strategies and efficient database querying
+✨ Key Features
+- Scalability: Services can be scaled independently based on demand.
+- Clean Architecture: Follows modular design and SOLID principles for maintainable code.
+- API Gateway: A single entry point for client requests, routing them to the appropriate microservice.
+- Real-time Updates: Potential for WebSocket integration to provide instant notifications (e.g., order status updates).
+- Performance Optimized: Implements caching strategies and efficient database querying
 
-Getting Started
+🔧 Getting Started
 - Clone the repo: git clone https://github.com/SamehDheir/E-commerce-Microservices-NestJS
 - Install dependencies: npm install
 - Environment Setup: Configure your .env files for each service.
